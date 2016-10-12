@@ -10,7 +10,7 @@
         "sassc"
     ],
     "homepage": "https://www.github.com/exactquery/xq-sassy",
-    "version": "1.0",
+    "version": "1.0.2",
     "authors": [
         {
             "name": "Aaron M Jones",
@@ -19,13 +19,13 @@
     ],
     "autoload": {
         "psr-4": {
-            "XQ\\Drivers": "src"
+            "XQ\\Drivers\": "src"
         }
     },
     "require": {
         "symfony/process": "^3.1"
     },
     "suggest": {
-        "leafo/scssphp": "Used as a backup to SASSC to compile SCSS.  Will function more slowly."
+        "leafo/scssphp": "Used as a backup to SASSC to compile SCSS.  Will function more slowly than sassc binary."
     }
 }

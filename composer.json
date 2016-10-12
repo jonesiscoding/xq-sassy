@@ -27,5 +27,5 @@
     },
     "suggest": {
         "leafo/scssphp": "Used as a backup to SASSC to compile SCSS.  Will function more slowly."
-    },
+    }
 }

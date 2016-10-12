@@ -1,0 +1,31 @@
+{
+    "name": "exactquery/xq-sassy",
+    "description": "PHP Drivers for SassC, PHP Sass, and scssphp, designed to work with Assetic.",
+    "keywords": [
+        "sass",
+        "scss",
+        "php",
+        "assetic",
+        "pleasing",
+        "sassc"
+    ],
+    "homepage": "https://www.github.com/exactquery/xq-sassy",
+    "version": "1.0",
+    "authors": [
+        {
+            "name": "Aaron M Jones",
+            "homepage": "http://www.jonesiscoding.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "XQ\\Drivers": "src"
+        }
+    },
+    "require": {
+        "symfony/process": "^3.1"
+    },
+    "suggest": {
+        "leafo/scssphp": "Used as a backup to SASSC to compile SCSS.  Will function more slowly."
+    },
+}

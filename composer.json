@@ -19,7 +19,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "XQ\\Drivers\": "src"
+            "XQ\\Drivers\\": "src"
         }
     },
     "require": {

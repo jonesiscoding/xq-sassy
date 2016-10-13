@@ -84,12 +84,12 @@ class ScssphpDriver extends AbstractSassDriver
     $this->addPluginPath( $paths );
   }
 
-  public function setMapComment( bool $mapComment )
+  public function setMapComment( $mapComment )
   {
     throw new \Exception( 'The Leafo scssphp package does not support omitting map comments or source maps.' );
   }
 
-  public function setSourceMap( bool $sourceMap )
+  public function setSourceMap( $sourceMap )
   {
     throw new \Exception( 'The Leafo scssphp package does not support the generation of source maps.' );
   }

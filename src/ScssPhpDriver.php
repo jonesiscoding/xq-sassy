@@ -74,7 +74,7 @@ class ScssphpDriver extends AbstractSassDriver
     return (isset($output)) ? $output : null;
   }
 
-  public function addPluginPath( $path )
+  public function addPluginPath( $path, $prepend = false )
   {
     throw new \Exception( 'The Leafo scssphp package does not support setting a plugin path.' );
   }

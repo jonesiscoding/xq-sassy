@@ -6,7 +6,14 @@
 namespace XQ\Drivers;
 
 /**
+ * PHP Driver to normalize usage of the PHP SASS extension.  For more info about the PHP Sass extension, see it's repo
+ * at https://github.com/sensational/sassphp.
+ *
  * Class PhpSassDriver
+ *
+ * @author  Aaron M Jones <aaron@jonesiscoding.com>
+ * @version ExactQuery Sassy v1.0.6 (https://github.com/xq-sassy/pleasing)
+ * @license MIT (https://github.com/exactquery/xq-sassy/blob/master/LICENSE)
  *
  * @package XQ\Drivers;
  */

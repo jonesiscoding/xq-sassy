@@ -12,7 +12,15 @@ use Leafo\ScssPhp\Formatter\Expanded;
 use Leafo\ScssPhp\Formatter\Nested;
 
 /**
+ * PHP Driver to normalize usage of the the leafo/scssphp package.  For more info about the PHP Sass extension, see it's repo
+ * at https://github.com/leafo/scssphp.
+ *
  * Class ScssphpDriver
+ *
+ * @author  Aaron M Jones <aaron@jonesiscoding.com>
+ * @version ExactQuery Sassy v1.0.6 (https://github.com/xq-sassy/pleasing)
+ * @license MIT (https://github.com/exactquery/xq-sassy/blob/master/LICENSE)
+ *
  * @package XQ\Drivers
  */
 class ScssphpDriver extends AbstractSassDriver

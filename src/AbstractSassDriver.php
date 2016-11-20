@@ -6,7 +6,14 @@
 namespace XQ\Drivers;
 
 /**
+ * Base class to be extended by various SASS compiler drivers.
+ *
  * Class AbstractSassDriver
+ *
+ * @author  Aaron M Jones <aaron@jonesiscoding.com>
+ * @version ExactQuery Sassy v1.0.6 (https://github.com/xq-sassy/pleasing)
+ * @license MIT (https://github.com/exactquery/xq-sassy/blob/master/LICENSE)
+ *
  * @package XQ\Drivers
  */
 abstract class AbstractSassDriver

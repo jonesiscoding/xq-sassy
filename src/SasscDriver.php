@@ -15,7 +15,7 @@ use Symfony\Component\Process\ProcessUtils;
  * Class SasscDriver
  *
  * @author  Aaron M Jones <aaron@jonesiscoding.com>
- * @version ExactQuery Sassy v1.0.6 (https://github.com/xq-sassy/pleasing)
+ * @version ExactQuery Sassy v1.0.8 (https://github.com/xq-sassy/pleasing)
  * @license MIT (https://github.com/exactquery/xq-sassy/blob/master/LICENSE)
  *
  * @package XQ\Drivers

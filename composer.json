@@ -1,5 +1,5 @@
 {
-    "name": "exactquery/xq-sassy",
+    "name": "jonesiscoding/xq-sassy",
     "description": "PHP Drivers for SassC, PHP Sass, and scssphp, designed to work with Assetic.",
     "keywords": [
         "sass",
@@ -10,8 +10,8 @@
         "sassc"
     ],
     "license": "MIT",
-    "homepage": "https://www.github.com/exactquery/xq-sassy",
-    "version": "1.0.8",
+    "homepage": "https://www.github.com/jonesiscoding/xq-sassy",
+    "version": "1.0.9",
     "authors": [
         {
             "name": "Aaron M Jones",
@@ -25,6 +25,9 @@
     },
     "require": {
         "symfony/process": ">=2.8"
+    },
+    "replace": {
+        "exactquery/xq-sassy": "^1.0"
     },
     "suggest": {
         "leafo/scssphp": "Used as a backup to SASSC to compile SCSS.  Will function more slowly than sassc binary."

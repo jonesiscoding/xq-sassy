@@ -55,7 +55,7 @@ class SasscDriver extends AbstractSassDriver
       array_unshift( $args, $this->sasscPath );
 
       // Run the Process
-      $Process = new Process( implode( ' ', $args ) );
+      $Process = new Process( $args );
       $Process->run();
 
       // Check for Errors
@@ -93,14 +93,14 @@ class SasscDriver extends AbstractSassDriver
     foreach ( $this->importPaths as $importPath )
     {
       $args[] = '--load-path';
-      $args[] = ProcessUtils::escapeArgument($importPath);
+      $args[] = $importPath;
     }
 
     // Plugin Paths
     foreach ( $this->pluginPaths as $pluginPath )
     {
       $args[] = "--plugin-path";
-      $args[] = ProcessUtils::escapeArgument($pluginPath);
+      $args[] = $pluginPath;
     }
 
     // Source Map
@@ -136,8 +136,8 @@ class SasscDriver extends AbstractSassDriver
     }
 
     // Input & Output
-    $args[] = ProcessUtils::escapeArgument($input);
-    $args[] = ProcessUtils::escapeArgument($output);
+    $args[] = $input;
+    $args[] = $output;
 
     return $args;
   }
@@ -159,8 +159,8 @@ class SasscDriver extends AbstractSassDriver
     $unique = uniqid();
 
     return array(
-      'input'  => $this->tmpPath . DIRECTORY_SEPARATOR . 'in' . $unique,
-      'output' => $this->tmpPath . DIRECTORY_SEPARATOR . 'out' . $unique
+        'input'  => $this->tmpPath . DIRECTORY_SEPARATOR . 'in' . $unique,
+        'output' => $this->tmpPath . DIRECTORY_SEPARATOR . 'out' . $unique
     );
   }
 

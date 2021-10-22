@@ -58,9 +58,6 @@ class ScssphpDriver extends AbstractSassDriver
       {
         switch ( $this->style )
         {
-          case self::STYLE_NESTED:
-            $sc->setFormatter(Nested::class);
-            break;
           case self::STYLE_EXPANDED:
             $sc->setFormatter(Expanded::class);
             break;
@@ -70,6 +67,7 @@ class ScssphpDriver extends AbstractSassDriver
           case self::STYLE_COMPRESSED:
             $sc->setFormatter(Compressed::class);
             break;
+          case self::STYLE_NESTED:
           default:
             $sc->setFormatter(Nested::class);
             break;

@@ -135,7 +135,7 @@ abstract class AbstractSassDriver
 
   /**
    * @param array|string  $path     A path or array of paths to add to the list of plugin paths.
-   * @param bool          $prepend  Whether or not to add this path to the beginning of the list.
+   * @param bool          $prepend  Whether to add this path to the beginning of the list.
    *
    * @return $this
    */
@@ -162,7 +162,7 @@ abstract class AbstractSassDriver
   }
 
   /**
-   * Sets whether or not to create a source map file (if supported by the compiler)
+   * Sets whether to create a source map file (if supported by the compiler)
    *
    * @param bool $sourceMap
    */
@@ -172,7 +172,7 @@ abstract class AbstractSassDriver
   }
 
   /**
-   * Sets whether or not to suppress comments in the map file.
+   * Sets whether to suppress comments in the map file.
    *
    * @param bool $mapComment
    */

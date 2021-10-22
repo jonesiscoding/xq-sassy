@@ -12,7 +12,7 @@ use Leafo\ScssPhp\Formatter\Expanded;
 use Leafo\ScssPhp\Formatter\Nested;
 
 /**
- * PHP Driver to normalize usage of the the leafo/scssphp package.  For more info about the PHP Sass extension, see it's repo
+ * PHP Driver to normalize usage of the leafo/scssphp package.  For more info about the PHP Sass extension, see it's repo
  * at https://github.com/leafo/scssphp.
  *
  * Class ScssphpDriver

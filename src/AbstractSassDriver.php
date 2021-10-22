@@ -104,8 +104,6 @@ abstract class AbstractSassDriver
    * Resets the plugin paths to their default, then adds the given paths.
    *
    * @param array|string $paths A list of the possible paths to check for SASS plugins.
-   *
-   * @return $this
    */
   public function setPluginPaths( array $paths )
   {

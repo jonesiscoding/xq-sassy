@@ -80,7 +80,7 @@ class PhpSassDriver extends AbstractSassDriver
     return (isset($output)) ? $output : null;
   }
 
-  public function addPluginPath( $path )
+  public function addPluginPath( $path, $prepend = false )
   {
     throw new \Exception( 'The PHP Sass extension does not support setting a plugin path.' );
   }
@@ -95,7 +95,7 @@ class PhpSassDriver extends AbstractSassDriver
     throw new \Exception( 'The PHP Sass extension does not support omitting map comments.' );
   }
 
-  public function setPrecision( int $precision )
+  public function setPrecision( $precision )
   {
     throw new \Exception( 'The PHP Sass extension does not support setting a precision value' );
   }

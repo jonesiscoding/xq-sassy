@@ -5,13 +5,19 @@
 
 namespace XQ\Drivers;
 
+use XQ\Drivers\Options\LineNumbersInterface;
+use XQ\Drivers\Options\MapCommentInterface;
+use XQ\Drivers\Options\PluginPathInterface;
+use XQ\Drivers\Options\PrecisionInterface;
+use XQ\Drivers\Options\SourceMapInterface;
+
 /**
  * Base class to be extended by various SASS compiler drivers.
  *
  * Class AbstractSassDriver
  *
  * @author  Aaron M Jones <aaron@jonesiscoding.com>
- * @version xqSassy v1.0.9 (https://github.com/xq-sassy/pleasing)
+ * @version xqSassy v1.2 (https://github.com/xq-sassy/pleasing)
  * @license MIT (https://github.com/jonesiscoding/xq-sassy/blob/master/LICENSE)
  *
  * @package XQ\Drivers
@@ -22,19 +28,10 @@ abstract class AbstractSassDriver
   const STYLE_EXPANDED = "expanded";
   const STYLE_COMPACT = "compact";
   const STYLE_COMPRESSED = "compressed";
-  const DEFAULT_PRECISION = 5;
-  const DEFAULT_SOURCEMAP = false;
-  const DEFAULT_MAPCOMMENT = true;
-  const DEFAULT_LINENUMBERS = false;
   const DEFAULT_STYLE = "nested";
 
   // CLI Options
   protected $importPaths;
-  protected $pluginPaths;
-  protected $sourceMap;
-  protected $mapComment;
-  protected $lineNumbers;
-  protected $precision;
   protected $style;
 
   public function __clone()
@@ -100,17 +97,6 @@ abstract class AbstractSassDriver
     return $this;
   }
 
-  /**
-   * Resets the plugin paths to their default, then adds the given paths.
-   *
-   * @param array|string $paths A list of the possible paths to check for SASS plugins.
-   */
-  public function setPluginPaths( array $paths )
-  {
-    $this->pluginPaths = array();
-    $this->addPluginPath( $paths );
-  }
-
   public function addImportPath($path, $prepend = false)
   {
     $paths = (is_array($path)) ? $path : array($path);
@@ -131,70 +117,6 @@ abstract class AbstractSassDriver
     }
   }
 
-  /**
-   * @param array|string  $path     A path or array of paths to add to the list of plugin paths.
-   * @param bool          $prepend  Whether to add this path to the beginning of the list.
-   *
-   * @return $this
-   */
-  public function addPluginPath($path, $prepend = false)
-  {
-    $paths = (is_array($path)) ? $path : array($path);
-
-    foreach ( $paths as $pluginPath )
-    {
-      if ( $realPluginPath = realpath( $pluginPath ) )
-      {
-        if ( $prepend )
-        {
-          array_unshift( $this->pluginPaths, $realPluginPath );
-        }
-        else
-        {
-          $this->pluginPaths[] = $realPluginPath;
-        }
-      }
-    }
-
-    return $this;
-  }
-
-  /**
-   * Sets whether to create a source map file (if supported by the compiler)
-   *
-   * @param bool $sourceMap
-   */
-  public function setSourceMap( $sourceMap )
-  {
-    $this->sourceMap = $sourceMap;
-  }
-
-  /**
-   * Sets whether to suppress comments in the map file.
-   *
-   * @param bool $mapComment
-   */
-  public function setMapComment( $mapComment )
-  {
-    $this->mapComment = $mapComment;
-  }
-
-  /**
-   * @param bool $lineNumbers
-   */
-  public function setLineNumbers( $lineNumbers )
-  {
-    $this->lineNumbers = $lineNumbers;
-  }
-
-  /**
-   * @param $precision
-   */
-  public function setPrecision( $precision )
-  {
-    $this->precision = $precision;
-  }
-
   // endregion ///////////////////////////////////////////// End CLI Arguments
 
   // region //////////////////////////////////////////////// Helper Methods
@@ -204,13 +126,41 @@ abstract class AbstractSassDriver
    */
   protected function setDefaults()
   {
-    $this->importPaths = array();
-    $this->pluginPaths = array();
-    $this->sourceMap = self::DEFAULT_SOURCEMAP;
-    $this->mapComment = self::DEFAULT_MAPCOMMENT;
-    $this->lineNumbers = self::DEFAULT_LINENUMBERS;
-    $this->precision = self::DEFAULT_PRECISION;
-    $this->style = self::DEFAULT_STYLE;
+    // Default the defaults
+    $defaults = $this->getDefaults();
+
+    $this->importPaths = $defaults['import_paths'] ?? array();
+    $this->style       = $defaults['style'] ?? self::DEFAULT_STYLE;
+
+    if ($this instanceof SourceMapInterface)
+    {
+      $this->setSourceMap($defaults['source_map'] ?? SourceMapInterface::DEFAULT_SOURCEMAP);
+    }
+
+    if ($this instanceof LineNumbersInterface)
+    {
+      $this->setLineNumbers($defaults['line_numbers'] ?? LineNumbersInterface::DEFAULT_LINENUMBERS);
+    }
+
+    if ($this instanceof PrecisionInterface)
+    {
+      $this->setPrecision($defaults['precision'] ?? PrecisionInterface::DEFAULT_PRECISION);
+    }
+
+    if ($this instanceof MapCommentInterface)
+    {
+      $this->setMapComment($defaults['map_comment'] ?? MapCommentInterface::DEFAULT_MAPCOMMENT);
+    }
+
+    if ($this instanceof PluginPathInterface)
+    {
+      $this->setPluginPaths($defaults['plugin_paths'] ?? array());
+    }
+  }
+
+  protected function getDefaults()
+  {
+    return array();
   }
 
   // endregion ///////////////////////////////////////////// End Helper Methods

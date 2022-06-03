@@ -5,6 +5,11 @@
 
 namespace XQ\Drivers;
 
+use XQ\Drivers\Options\LineNumbersInterface;
+use XQ\Drivers\Options\LineNumbersTrait;
+use XQ\Drivers\Options\SourceMapInterface;
+use XQ\Drivers\Options\SourceMapTrait;
+
 /**
  * PHP Driver to normalize usage of the PHP SASS extension.  For more info about the PHP Sass extension, see it's repo
  * at https://github.com/sensational/sassphp.
@@ -12,13 +17,16 @@ namespace XQ\Drivers;
  * Class PhpSassDriver
  *
  * @author  Aaron M Jones <aaron@jonesiscoding.com>
- * @version xqSassy Sassy v1.0.9 (https://github.com/xq-sassy/pleasing)
+ * @version xqSassy Sassy v1.2 (https://github.com/xq-sassy/pleasing)
  * @license MIT (https://github.com/jonesiscoding/xq-sassy/blob/master/LICENSE)
  *
  * @package XQ\Drivers;
  */
-class PhpSassDriver extends AbstractSassDriver
+class PhpSassDriver extends AbstractSassDriver implements LineNumbersInterface, SourceMapInterface
 {
+  use LineNumbersTrait;
+  use SourceMapTrait;
+
   // region //////////////////////////////////////////////// Main Public Methods
 
   public function compile( $content )
@@ -71,33 +79,13 @@ class PhpSassDriver extends AbstractSassDriver
         throw new \Exception( $e->getMessage() );
       }
 
-      if ( !$this->sourceMap && is_array( $output ) )
+      if ( !$this->isSourceMap() && is_array( $output ) )
       {
         $output = $output[0];
       }
     }
 
     return (isset($output)) ? $output : null;
-  }
-
-  public function addPluginPath( $path, $prepend = false )
-  {
-    throw new \Exception( 'The PHP Sass extension does not support setting a plugin path.' );
-  }
-
-  public function setPluginPaths( array $paths )
-  {
-    $this->addPluginPath( $paths );
-  }
-
-  public function setMapComment( $mapComment )
-  {
-    throw new \Exception( 'The PHP Sass extension does not support omitting map comments.' );
-  }
-
-  public function setPrecision( $precision )
-  {
-    throw new \Exception( 'The PHP Sass extension does not support setting a precision value' );
   }
 
   // endregion ///////////////////////////////////////////// End Main Public Methods

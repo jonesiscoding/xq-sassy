@@ -11,7 +11,7 @@
     ],
     "license": "MIT",
     "homepage": "https://www.github.com/jonesiscoding/xq-sassy",
-    "version": "1.0.10",
+    "version": "1.2",
     "authors": [
         {
             "name": "Aaron M Jones",
@@ -24,7 +24,7 @@
         }
     },
     "require": {
-        "symfony/process": ">=2.8"
+        "symfony/process": "^3.4"
     },
     "replace": {
         "exactquery/xq-sassy": "^1.0"

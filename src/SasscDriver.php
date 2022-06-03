@@ -7,7 +7,7 @@ namespace XQ\Drivers;
 
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Process\ProcessUtils;
+use XQ\Drivers\Options as Options;
 
 /**
  * PHP Driver for the 'sassc' binary.  For more info on sassc, see https://github.com/sass/sassc.
@@ -15,13 +15,19 @@ use Symfony\Component\Process\ProcessUtils;
  * Class SasscDriver
  *
  * @author  Aaron M Jones <aaron@jonesiscoding.com>
- * @version xqSassy Sassy v1.0.9 (https://github.com/xq-sassy/pleasing)
+ * @version xqSassy Sassy v1.2 (https://github.com/xq-sassy/pleasing)
  * @license MIT (https://github.com/jonesiscoding/xq-sassy/blob/master/LICENSE)
  *
  * @package XQ\Drivers
  */
-class SasscDriver extends AbstractSassDriver
+class SasscDriver extends AbstractSassDriver implements Options\MapCommentInterface, Options\PluginPathInterface, Options\PrecisionInterface, Options\LineNumbersInterface, Options\SourceMapInterface
 {
+  use Options\LineNumbersTrait;
+  use Options\MapCommentTrait;
+  use Options\PluginPathTrait;
+  use Options\PrecisionTrait;
+  use Options\SourceMapTrait;
+
   protected $sasscPath;
   protected $tmpPath;
 
@@ -97,35 +103,36 @@ class SasscDriver extends AbstractSassDriver
     }
 
     // Plugin Paths
-    foreach ( $this->pluginPaths as $pluginPath )
+    foreach ( $this->getPluginPaths() as $pluginPath )
     {
       $args[] = "--plugin-path";
       $args[] = $pluginPath;
     }
 
     // Source Map
-    if ( $this->sourceMap )
+    if ( $this->isSourceMap())
     {
       $args[] = '--sourcemap';
     }
 
     // Map Comment
-    if ( !$this->mapComment )
+    if ( !$this->isMapComment() )
     {
       $args[] = '--omit-map-comment';
     }
 
     // Line Numbers
-    if ( $this->lineNumbers )
+    if ( $this->isLineNumbers() )
     {
       $args[] = '--line-numbers';
     }
 
     // Precision
-    if ( $this->precision != self::DEFAULT_PRECISION )
+    $precision = $this->getPrecision();
+    if ($precision  != self::DEFAULT_PRECISION )
     {
       $args[] = '--precision';
-      $args[] = $this->precision;
+      $args[] = $precision;
     }
 
     // Output Style

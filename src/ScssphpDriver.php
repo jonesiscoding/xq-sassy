@@ -10,6 +10,10 @@ use Leafo\ScssPhp\Formatter\Compact;
 use Leafo\ScssPhp\Formatter\Compressed;
 use Leafo\ScssPhp\Formatter\Expanded;
 use Leafo\ScssPhp\Formatter\Nested;
+use XQ\Drivers\Options\LineNumbersInterface;
+use XQ\Drivers\Options\LineNumbersTrait;
+use XQ\Drivers\Options\PrecisionInterface;
+use XQ\Drivers\Options\PrecisionTrait;
 
 /**
  * PHP Driver to normalize usage of the leafo/scssphp package.  For more info about the PHP Sass extension, see it's repo
@@ -18,13 +22,15 @@ use Leafo\ScssPhp\Formatter\Nested;
  * Class ScssphpDriver
  *
  * @author  Aaron M Jones <aaron@jonesiscoding.com>
- * @version xqSassy Sassy v1.0.9 (https://github.com/xq-sassy/pleasing)
+ * @version xqSassy Sassy v1.2 (https://github.com/xq-sassy/pleasing)
  * @license MIT (https://github.com/jonesiscoding/xq-sassy/blob/master/LICENSE)
  *
  * @package XQ\Drivers
  */
-class ScssphpDriver extends AbstractSassDriver
+class ScssphpDriver extends AbstractSassDriver implements PrecisionInterface, LineNumbersInterface
 {
+  use PrecisionTrait;
+  use LineNumbersTrait;
 
   // region //////////////////////////////////////////////// Main Public Methods
 
@@ -42,15 +48,16 @@ class ScssphpDriver extends AbstractSassDriver
       }
 
       // Line Numbers
-      if ( $this->lineNumbers )
+      if ( $this->isLineNumbers() )
       {
         $sc->setLineNumberStyle( Compiler::LINE_COMMENTS );
       }
 
       // Precision
-      if ( $this->precision != self::DEFAULT_PRECISION )
+      $precision = $this->getPrecision();
+      if ( $precision != self::DEFAULT_PRECISION )
       {
-        $sc->setNumberPrecision( $this->precision );
+        $sc->setNumberPrecision( $precision );
       }
 
       // Output Style
@@ -78,26 +85,6 @@ class ScssphpDriver extends AbstractSassDriver
     }
 
     return (isset($output)) ? $output : null;
-  }
-
-  public function addPluginPath( $path, $prepend = false )
-  {
-    throw new \Exception( 'The Leafo scssphp package does not support setting a plugin path.' );
-  }
-
-  public function setPluginPaths( array $paths )
-  {
-    $this->addPluginPath( $paths );
-  }
-
-  public function setMapComment( $mapComment )
-  {
-    throw new \Exception( 'The Leafo scssphp package does not support omitting map comments or source maps.' );
-  }
-
-  public function setSourceMap( $sourceMap )
-  {
-    throw new \Exception( 'The Leafo scssphp package does not support the generation of source maps.' );
   }
 
   // endregion ///////////////////////////////////////////// End Main Public Methods

@@ -15,8 +15,10 @@ class DartSassDriver extends AbstractSassDriver implements SourceMapInterface
   protected $sassPath;
   protected $tmpPath;
 
-  public function __construct($sassPath, $tmpPath = '/tmp')
+  public function __construct($debug = false, $sassPath = null, $tmpPath = '/tmp')
   {
+    parent::__construct($debug);
+
     $this->sassPath = $sassPath;
     $this->tmpPath = $tmpPath . DIRECTORY_SEPARATOR . 'xq_sass';
     $this->setDefaults();

@@ -31,8 +31,10 @@ class SasscDriver extends AbstractSassDriver implements Options\MapCommentInterf
   protected $sasscPath;
   protected $tmpPath;
 
-  public function __construct($sasscPath, $tmpPath = '/tmp')
+  public function __construct($debug = false, $sasscPath = null, $tmpPath = '/tmp')
   {
+    parent::__construct($debug);
+
     $this->sasscPath = $sasscPath;
     $this->tmpPath   = $tmpPath . DIRECTORY_SEPARATOR . 'xq_sassc';
     $this->setDefaults();

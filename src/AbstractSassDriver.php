@@ -33,6 +33,16 @@ abstract class AbstractSassDriver
   // CLI Options
   protected $importPaths;
   protected $style;
+  /** @var bool|int */
+  protected $debug;
+
+  /**
+   * @param bool $debug
+   */
+  public function __construct(bool $debug)
+  {
+    $this->debug = $debug;
+  }
 
   public function __clone()
   {

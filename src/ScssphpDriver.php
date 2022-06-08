@@ -1,6 +1,9 @@
 <?php
+
 /**
  * ScssphpDriver.php
+ *
+ * @noinspection PhpUndefinedClassInspection PhpUndefinedNamespaceInspection
  */
 
 namespace XQ\Drivers;
@@ -34,37 +37,36 @@ class ScssphpDriver extends AbstractSassDriver implements PrecisionInterface, Li
 
   // region //////////////////////////////////////////////// Main Public Methods
 
-  public function compile( $content )
+  public function compile($content)
   {
-    if ( !empty( $content ) )
+    if (!empty($content))
     {
       // Create the ProcessBuilder
       $sc = new Compiler();
 
       // Import Paths
-      foreach ( $this->importPaths as $importPath )
+      foreach ($this->importPaths as $importPath)
       {
         $sc->addImportPath($importPath);
       }
 
       // Line Numbers
-      if ( $this->isLineNumbers() )
+      if ($this->isLineNumbers())
       {
-        $sc->setLineNumberStyle( Compiler::LINE_COMMENTS );
+        $sc->setLineNumberStyle(Compiler::LINE_COMMENTS);
       }
 
       // Precision
       $precision = $this->getPrecision();
-      if ( $precision != self::DEFAULT_PRECISION )
+      if ($precision != self::DEFAULT_PRECISION)
       {
-        $sc->setNumberPrecision( $precision );
+        $sc->setNumberPrecision($precision);
       }
 
       // Output Style
-      if ( $this->style != self::DEFAULT_STYLE )
+      if ($this->style != self::DEFAULT_STYLE)
       {
-        switch ( $this->style )
-        {
+        switch ($this->style) {
           case self::STYLE_EXPANDED:
             $sc->setFormatter(Expanded::class);
             break;

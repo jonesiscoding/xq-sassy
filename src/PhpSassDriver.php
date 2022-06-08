@@ -29,57 +29,61 @@ class PhpSassDriver extends AbstractSassDriver implements LineNumbersInterface, 
 
   // region //////////////////////////////////////////////// Main Public Methods
 
-  public function compile( $content )
+
+  /** @noinspection PhpUndefinedClassInspection */
+  /**
+   * @throws \Exception
+   */
+  public function compile($content)
   {
-    if ( !empty( $content ) )
+    if (!empty($content))
     {
       // Create the ProcessBuilder
       $Sass = new Sass();
 
       // Import Paths
-      foreach ( $this->importPaths as $importPath )
+      foreach ($this->importPaths as $importPath)
       {
-        $Sass->setIncludePath( $importPath );
+        $Sass->setIncludePath($importPath);
       }
 
       // Line Numbers
-      if ( $this->lineNumbers )
+      if ($this->lineNumbers)
       {
-        $Sass->setComments( true );
+        $Sass->setComments(true);
       }
 
       // Output Style
-      if ( $this->style != self::DEFAULT_STYLE )
+      if ($this->style != self::DEFAULT_STYLE)
       {
-        switch ( $this->style )
-        {
+        switch ($this->style) {
           case self::STYLE_NESTED:
-            $Sass->setStyle( Sass::STYLE_NESTED );
+            $Sass->setStyle(Sass::STYLE_NESTED);
             break;
           case self::STYLE_EXPANDED:
-            $Sass->setStyle( Sass::STYLE_EXPANDED );
+            $Sass->setStyle(Sass::STYLE_EXPANDED);
             break;
           case self::STYLE_COMPACT:
-            $Sass->setStyle( Sass::STYLE_COMPACT );
+            $Sass->setStyle(Sass::STYLE_COMPACT);
             break;
           case self::STYLE_COMPRESSED:
-            $Sass->setStyle( Sass::STYLE_COMPRESSED );
+            $Sass->setStyle(Sass::STYLE_COMPRESSED);
             break;
           default:
-            $Sass->setStyle( Sass::STYLE_NESTED );
+            $Sass->setStyle(Sass::STYLE_NESTED);
         }
       }
 
       try
       {
-        $output = $Sass->compile( $content );
+        $output = $Sass->compile($content);
       }
-      catch ( \SassException $e )
+      catch (\SassException $e)
       {
-        throw new \Exception( $e->getMessage() );
+        throw new \Exception($e->getMessage());
       }
 
-      if ( !$this->isSourceMap() && is_array( $output ) )
+      if (!$this->isSourceMap() && is_array($output))
       {
         $output = $output[0];
       }
@@ -89,5 +93,4 @@ class PhpSassDriver extends AbstractSassDriver implements LineNumbersInterface, 
   }
 
   // endregion ///////////////////////////////////////////// End Main Public Methods
-
 }

@@ -34,7 +34,7 @@ class SasscDriver extends AbstractSassDriver implements Options\MapCommentInterf
   public function __construct($sasscPath, $tmpPath = '/tmp')
   {
     $this->sasscPath = $sasscPath;
-    $this->tmpPath = $tmpPath . DIRECTORY_SEPARATOR . 'xq_sassc';
+    $this->tmpPath   = $tmpPath . DIRECTORY_SEPARATOR . 'xq_sassc';
     $this->setDefaults();
   }
 
@@ -48,7 +48,7 @@ class SasscDriver extends AbstractSassDriver implements Options\MapCommentInterf
    * @return null|string
    * @throws \Exception
    */
-  public function compile( $content )
+  public function compile($content)
   {
     if ( !empty( $content ) )
     {
@@ -93,7 +93,13 @@ class SasscDriver extends AbstractSassDriver implements Options\MapCommentInterf
 
   // region //////////////////////////////////////////////// Private Helper Methods
 
-  private function buildArgs($input, $output)
+  /**
+   * @param array $input
+   * @param array $output
+   *
+   * @return array
+   */
+  private function buildArgs(array $input, array $output): array
   {
     // Import Paths
     foreach ( $this->importPaths as $importPath )
@@ -129,7 +135,7 @@ class SasscDriver extends AbstractSassDriver implements Options\MapCommentInterf
 
     // Precision
     $precision = $this->getPrecision();
-    if ($precision  != self::DEFAULT_PRECISION )
+    if ($precision != self::DEFAULT_PRECISION )
     {
       $args[] = '--precision';
       $args[] = $precision;
@@ -149,7 +155,10 @@ class SasscDriver extends AbstractSassDriver implements Options\MapCommentInterf
     return $args;
   }
 
-  private function getTmpFiles()
+  /**
+   * @throws \Exception
+   */
+  private function getTmpFiles(): array
   {
     if ( !file_exists( $this->tmpPath ) )
     {
@@ -165,22 +174,22 @@ class SasscDriver extends AbstractSassDriver implements Options\MapCommentInterf
 
     $unique = uniqid();
 
-    return array(
+    return [
         'input'  => $this->tmpPath . DIRECTORY_SEPARATOR . 'in' . $unique,
         'output' => $this->tmpPath . DIRECTORY_SEPARATOR . 'out' . $unique
-    );
+    ];
   }
 
-  private function cleanup( $files )
+  private function cleanup($files)
   {
     foreach ( $files as $file )
     {
-      if(file_exists($file)) {
+      if (file_exists($file))
+      {
         unlink( $file );
       }
     }
   }
 
   // endregion ///////////////////////////////////////////// End Private Helper Methods
-
 }

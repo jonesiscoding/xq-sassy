@@ -3,7 +3,6 @@
 namespace XQ\Drivers\Options;
 
 use XQ\Drivers\AbstractSassDriver;
-use XQ\Drivers\Options\PrecisionInterface;
 
 /**
  * Class PrecisionTrait
@@ -26,7 +25,7 @@ trait PrecisionTrait
    *
    * @return AbstractSassDriver|PrecisionTrait|PrecisionInterface
    */
-  public function setPrecision( int $precision ): AbstractSassDriver
+  public function setPrecision(int $precision): AbstractSassDriver
   {
     $this->precision = $precision;
 

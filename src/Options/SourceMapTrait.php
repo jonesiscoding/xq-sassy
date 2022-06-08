@@ -23,7 +23,7 @@ trait SourceMapTrait
    * @param bool $sourceMap
    * @return AbstractSassDriver|SourceMapTrait|SourceMapInterface
    */
-  public function setSourceMap( bool $sourceMap ): AbstractSassDriver
+  public function setSourceMap(bool $sourceMap): AbstractSassDriver
   {
     $this->sourceMap = $sourceMap;
 

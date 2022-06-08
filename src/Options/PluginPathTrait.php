@@ -3,7 +3,6 @@
 namespace XQ\Drivers\Options;
 
 use XQ\Drivers\AbstractSassDriver;
-use XQ\Drivers\Options\PluginPathInterface;
 
 trait PluginPathTrait
 {
@@ -18,7 +17,7 @@ trait PluginPathTrait
    */
   public function addPluginPath($path, bool $prepend = false): AbstractSassDriver
   {
-    $paths = (is_array($path)) ? $path : array($path);
+    $paths = (is_array($path)) ? $path : [$path];
 
     foreach ( $paths as $pluginPath )
     {
@@ -53,11 +52,11 @@ trait PluginPathTrait
    *
    * @return AbstractSassDriver|PluginPathTrait|PluginPathInterface
    */
-  public function setPluginPaths( array $paths ): AbstractSassDriver
+  public function setPluginPaths(array $paths): AbstractSassDriver
   {
-    $this->pluginPaths = array();
+    $this->pluginPaths = [];
     $this->addPluginPath( $paths );
-    
+
     return $this;
   }
 }

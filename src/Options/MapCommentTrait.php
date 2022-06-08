@@ -3,7 +3,6 @@
 namespace XQ\Drivers\Options;
 
 use XQ\Drivers\AbstractSassDriver;
-use XQ\Drivers\Options\MapCommentInterface;
 
 trait MapCommentTrait
 {
@@ -25,7 +24,7 @@ trait MapCommentTrait
    *
    * @return AbstractSassDriver|MapCommentInterface|MapCommentTrait
    */
-  public function setMapComment( bool $mapComment ): AbstractSassDriver
+  public function setMapComment(bool $mapComment): AbstractSassDriver
   {
     $this->mapComment = $mapComment;
 

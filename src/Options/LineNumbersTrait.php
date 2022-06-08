@@ -3,7 +3,6 @@
 namespace XQ\Drivers\Options;
 
 use XQ\Drivers\AbstractSassDriver;
-use XQ\Drivers\Options\LineNumbersInterface;
 
 trait LineNumbersTrait
 {

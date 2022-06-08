@@ -50,7 +50,7 @@ class SasscDriver extends AbstractSassDriver implements Options\MapCommentInterf
    * @return null|string
    * @throws \Exception
    */
-  public function compile($content)
+  public function compile(string $content)
   {
     if ( !empty( $content ) )
     {
@@ -96,12 +96,12 @@ class SasscDriver extends AbstractSassDriver implements Options\MapCommentInterf
   // region //////////////////////////////////////////////// Private Helper Methods
 
   /**
-   * @param array $input
-   * @param array $output
+   * @param string $input
+   * @param string $output
    *
    * @return array
    */
-  private function buildArgs(array $input, array $output): array
+  private function buildArgs(string $input, string $output): array
   {
     // Import Paths
     foreach ( $this->importPaths as $importPath )

@@ -4,6 +4,11 @@ namespace XQ\Drivers;
 
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+use XQ\Drivers\Message\DartSassException;
+use XQ\Drivers\Message\DeprecationMessage;
+use XQ\Drivers\Message\ErrorMessage;
+use XQ\Drivers\Message\MessageFactory;
+use XQ\Drivers\Message\WarningMessage;
 use XQ\Drivers\Options\SourceMapInterface;
 use XQ\Drivers\Options\SourceMapTrait;
 
@@ -20,11 +25,18 @@ class DartSassDriver extends AbstractSassDriver implements SourceMapInterface
     parent::__construct($debug);
 
     $this->sassPath = $sassPath;
-    $this->tmpPath = $tmpPath . DIRECTORY_SEPARATOR . 'xq_sass';
+    $this->tmpPath  = $tmpPath . DIRECTORY_SEPARATOR . 'xq_sass';
     $this->setDefaults();
   }
 
-  public function compile($content)
+  /**
+   * @param string $content
+   *
+   * @return false|string|null
+   * @throws DartSassException
+   * @throws \Exception
+   */
+  public function compile(string $content)
   {
     if ( !empty( $content ) )
     {
@@ -41,31 +53,68 @@ class DartSassDriver extends AbstractSassDriver implements SourceMapInterface
       $Process->run();
 
       // Check for Errors
-      if (!$Process->isSuccessful())
+      $messages = (new MessageFactory())->build($Process->getErrorOutput());
+      if (!$Process->isSuccessful() || !file_exists($files['output']))
       {
         $this->cleanup( $files );
+
+        foreach ($messages as $SassMessage)
+        {
+          if ($SassMessage instanceof ErrorMessage)
+          {
+            $prev = $Process->isSuccessful() ? null : new ProcessFailedException($Process);
+
+            throw new DartSassException($SassMessage, $Process->getExitCode(), $prev);
+          }
+        }
+
         throw new ProcessFailedException($Process);
       }
       else
       {
-        if ( file_exists( $files[ 'output' ] ) )
+        $output = file_get_contents($files['output']);
+
+        // Clean Up
+        $this->cleanup($files);
+
+        foreach ($messages as $SassMessage)
         {
-          $output = file_get_contents( $files[ 'output' ] );
-        }
-        else
-        {
-          throw new \Exception( 'No output from compiled SASS (' . $Process->getOutput() . ')' );
+          if ($SassMessage instanceof ErrorMessage)
+          {
+            throw new DartSassException($SassMessage, $Process->getExitCode());
+          }
+          elseif ($SassMessage instanceof DeprecationMessage && $this->isDebug())
+          {
+            if ($this->getDebugLevel() > 1)
+            {
+              throw new DartSassException($SassMessage, $Process->getExitCode());
+            }
+
+            @trigger_error($SassMessage->getSummary(), $SassMessage->getSeverity());
+          }
+          elseif ($SassMessage instanceof WarningMessage && $this->isDebug())
+          {
+            if ($this->getDebugLevel() > 1)
+            {
+              throw new DartSassException($SassMessage, $Process->getExitCode());
+            }
+
+            @trigger_error($SassMessage->getSummary(), $SassMessage->getSeverity());
+          }
         }
       }
-
-      // Clean Up
-      $this->cleanup($files);
     }
 
     return (isset($output)) ? $output : null;
   }
 
-  private function buildArgs($input, $output)
+  /**
+   * @param string $input
+   * @param string $output
+   *
+   * @return array
+   */
+  private function buildArgs(string $input, string $output): array
   {
     // Import Paths
     foreach ( $this->importPaths as $importPath )
@@ -97,13 +146,16 @@ class DartSassDriver extends AbstractSassDriver implements SourceMapInterface
     return $args;
   }
 
-  protected function getDefaults()
+  protected function getDefaults(): array
   {
-    return array('source_map' => true);
+    return ['source_map' => true];
   }
 
-
-  private function getTmpFiles()
+  /**
+   * @return string[]
+   * @throws \Exception
+   */
+  private function getTmpFiles(): array
   {
     if ( !file_exists( $this->tmpPath ) )
     {
@@ -119,17 +171,18 @@ class DartSassDriver extends AbstractSassDriver implements SourceMapInterface
 
     $unique = uniqid();
 
-    return array(
+    return [
         'input'  => $this->tmpPath . DIRECTORY_SEPARATOR . 'in' . $unique,
         'output' => $this->tmpPath . DIRECTORY_SEPARATOR . 'out' . $unique
-    );
+    ];
   }
 
-  private function cleanup( $files )
+  private function cleanup($files)
   {
     foreach ( $files as $file )
     {
-      if(file_exists($file)) {
+      if (file_exists($file))
+      {
         unlink( $file );
       }
     }

@@ -34,7 +34,7 @@ class PhpSassDriver extends AbstractSassDriver implements LineNumbersInterface, 
   /**
    * @throws \Exception
    */
-  public function compile($content)
+  public function compile(string $content)
   {
     if (!empty($content))
     {

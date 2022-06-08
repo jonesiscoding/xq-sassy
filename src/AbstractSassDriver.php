@@ -24,11 +24,11 @@ use XQ\Drivers\Options\SourceMapInterface;
  */
 abstract class AbstractSassDriver
 {
-  const STYLE_NESTED = "nested";
-  const STYLE_EXPANDED = "expanded";
-  const STYLE_COMPACT = "compact";
+  const STYLE_NESTED     = "nested";
+  const STYLE_EXPANDED   = "expanded";
+  const STYLE_COMPACT    = "compact";
   const STYLE_COMPRESSED = "compressed";
-  const DEFAULT_STYLE = "nested";
+  const DEFAULT_STYLE    = "nested";
 
   // CLI Options
   protected $importPaths;
@@ -59,7 +59,25 @@ abstract class AbstractSassDriver
    *
    * @return mixed
    */
-  abstract public function compile( $content );
+  abstract public function compile(string $content);
+
+  /**
+   * @return bool|int
+   */
+  public function isDebug()
+  {
+    return $this->debug;
+  }
+
+  public function getDebugLevel()
+  {
+    if (!is_int($this->debug))
+    {
+      return $this->isDebug() ? 1 : 0;
+    }
+
+    return $this->debug;
+  }
 
   // endregion ///////////////////////////////////////////// End Main Public Methods
 
@@ -68,19 +86,19 @@ abstract class AbstractSassDriver
   /**
    * Sets the output style between the various output styles supported by SASS.
    *
-   * @param int $style    One of the output style constants from this class.
+   * @param int $style One of the output style constants from this class.
    *
    * @return $this
    * @throws \Exception   If an invalid output style is specified.
    */
-  public function setOutputStyle( $style )
+  public function setOutputStyle(int $style): AbstractSassDriver
   {
-    $possibleStyles = array(
+    $possibleStyles = [
       self::STYLE_NESTED,
       self::STYLE_EXPANDED,
       self::STYLE_COMPACT,
       self::STYLE_COMPRESSED
-    );
+    ];
 
     if ( !in_array( $style, $possibleStyles ) )
     {
@@ -99,9 +117,9 @@ abstract class AbstractSassDriver
    *
    * @return $this
    */
-  public function setImportPaths( array $paths )
+  public function setImportPaths(array $paths): AbstractSassDriver
   {
-    $this->importPaths = array();
+    $this->importPaths = [];
     $this->addImportPath( $paths );
 
     return $this;
@@ -109,7 +127,7 @@ abstract class AbstractSassDriver
 
   public function addImportPath($path, $prepend = false)
   {
-    $paths = (is_array($path)) ? $path : array($path);
+    $paths = (is_array($path)) ? $path : [$path];
 
     foreach ( $paths as $importPath )
     {
@@ -139,8 +157,8 @@ abstract class AbstractSassDriver
     // Default the defaults
     $defaults = $this->getDefaults();
 
-    $this->importPaths = $defaults['import_paths'] ?? array();
-    $this->style       = $defaults['style'] ?? self::DEFAULT_STYLE;
+    $this->importPaths = $defaults['import_paths'] ?? [];
+    $this->style       = $defaults['style']        ?? self::DEFAULT_STYLE;
 
     if ($this instanceof SourceMapInterface)
     {
@@ -164,15 +182,14 @@ abstract class AbstractSassDriver
 
     if ($this instanceof PluginPathInterface)
     {
-      $this->setPluginPaths($defaults['plugin_paths'] ?? array());
+      $this->setPluginPaths($defaults['plugin_paths'] ?? []);
     }
   }
 
-  protected function getDefaults()
+  protected function getDefaults(): array
   {
-    return array();
+    return [];
   }
 
   // endregion ///////////////////////////////////////////// End Helper Methods
-
 }

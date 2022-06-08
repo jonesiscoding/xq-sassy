@@ -37,7 +37,7 @@ class ScssphpDriver extends AbstractSassDriver implements PrecisionInterface, Li
 
   // region //////////////////////////////////////////////// Main Public Methods
 
-  public function compile($content)
+  public function compile(string $content)
   {
     if (!empty($content))
     {

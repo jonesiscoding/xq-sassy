@@ -86,12 +86,12 @@ abstract class AbstractSassDriver
   /**
    * Sets the output style between the various output styles supported by SASS.
    *
-   * @param int $style One of the output style constants from this class.
+   * @param string $style One of the output style constants from this class.
    *
    * @return $this
    * @throws \Exception   If an invalid output style is specified.
    */
-  public function setOutputStyle(int $style): AbstractSassDriver
+  public function setOutputStyle(string $style): AbstractSassDriver
   {
     $possibleStyles = [
       self::STYLE_NESTED,

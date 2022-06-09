@@ -37,9 +37,9 @@ abstract class AbstractSassDriver
   protected $debug;
 
   /**
-   * @param bool $debug
+   * @param int|bool $debug
    */
-  public function __construct(bool $debug)
+  public function __construct($debug)
   {
     $this->debug = $debug;
   }

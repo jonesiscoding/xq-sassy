@@ -25,7 +25,7 @@ use XQ\Drivers\Options\PrecisionTrait;
  * Class ScssphpDriver
  *
  * @author  Aaron M Jones <aaron@jonesiscoding.com>
- * @version xqSassy Sassy v1.2 (https://github.com/xq-sassy/pleasing)
+ * @version xqSassy v2.0 (https://github.com/xq-sassy/pleasing)
  * @license MIT (https://github.com/jonesiscoding/xq-sassy/blob/master/LICENSE)
  *
  * @package XQ\Drivers

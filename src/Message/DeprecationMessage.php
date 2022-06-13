@@ -65,6 +65,10 @@ class DeprecationMessage extends WarningMessage
       $this->file   = trim($m['file']) ?? 'Unknown File';
       // And the next line is the message
       $this->message = array_shift($lines);
+      // Then we have a recommendation
+      $this->recommendation = implode("\n", $this->extractRecommendation($lines));
+      // But more info isn't present.
+      $this->more = '';
       // Then we have a syntax
       $this->syntax = implode("\n", $this->extractSyntax($lines));
 

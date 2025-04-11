@@ -8,19 +8,10 @@
 
 namespace XQ\Drivers;
 
-use Leafo\ScssPhp\Compiler;
-use Leafo\ScssPhp\Formatter\Compact;
-use Leafo\ScssPhp\Formatter\Compressed;
-use Leafo\ScssPhp\Formatter\Expanded;
-use Leafo\ScssPhp\Formatter\Nested;
-use XQ\Drivers\Options\LineNumbersInterface;
-use XQ\Drivers\Options\LineNumbersTrait;
-use XQ\Drivers\Options\PrecisionInterface;
-use XQ\Drivers\Options\PrecisionTrait;
 
 /**
- * PHP Driver to normalize usage of the leafo/scssphp package.  For more info about the PHP Sass extension, see it's repo
- * at https://github.com/leafo/scssphp.
+ * PHP Driver to normalize usage of the scssphp/scssphp package.  For more info about the PHP Sass extension, see it's repo
+ * at https://github.com/scssphp/scssphp.
  *
  * Class ScssphpDriver
  *
@@ -30,60 +21,51 @@ use XQ\Drivers\Options\PrecisionTrait;
  *
  * @package XQ\Drivers
  */
-class ScssphpDriver extends AbstractSassDriver implements PrecisionInterface, LineNumbersInterface
+class ScssphpDriver extends AbstractSassDriver
 {
-  use PrecisionTrait;
-  use LineNumbersTrait;
-
   // region //////////////////////////////////////////////// Main Public Methods
 
+  /**
+   * @param string $content
+   *
+   * @return string|null
+   * @throws \Exception
+   */
   public function compile(string $content)
   {
-    if (!empty($content))
+    if(class_exists("\\ScssPhp\\ScssPhp\\Compiler"))
     {
-      // Create the ProcessBuilder
-      $sc = new Compiler();
-
-      // Import Paths
-      foreach ($this->importPaths as $importPath)
+      if (!empty($content))
       {
-        $sc->addImportPath($importPath);
-      }
+        // Create the ProcessBuilder
+        $sc = new \ScssPhp\ScssPhp\Compiler();
 
-      // Line Numbers
-      if ($this->isLineNumbers())
-      {
-        $sc->setLineNumberStyle(Compiler::LINE_COMMENTS);
-      }
-
-      // Precision
-      $precision = $this->getPrecision();
-      if ($precision != self::DEFAULT_PRECISION)
-      {
-        $sc->setNumberPrecision($precision);
-      }
-
-      // Output Style
-      if ($this->style != self::DEFAULT_STYLE)
-      {
-        switch ($this->style) {
-          case self::STYLE_EXPANDED:
-            $sc->setFormatter(Expanded::class);
-            break;
-          case self::STYLE_COMPACT:
-            $sc->setFormatter(Compact::class);
-            break;
-          case self::STYLE_COMPRESSED:
-            $sc->setFormatter(Compressed::class);
-            break;
-          case self::STYLE_NESTED:
-          default:
-            $sc->setFormatter(Nested::class);
-            break;
+        // Import Paths
+        foreach ($this->importPaths as $importPath)
+        {
+          $sc->addImportPath($importPath);
         }
-      }
 
-      $output = $sc->compile($content);
+        // Output Style
+        if ($this->style != self::DEFAULT_STYLE)
+        {
+          switch ($this->style) {
+            case self::STYLE_COMPRESSED:
+              $sc->setOutputStyle(\ScssPhp\ScssPhp\OutputStyle::COMPRESSED);
+              break;
+            case self::STYLE_EXPANDED:
+            default:
+              $sc->setOutputStyle(\ScssPhp\ScssPhp\OutputStyle::EXPANDED);
+              break;
+          }
+        }
+
+        $output = $sc->compileString($content)->getCss();
+      }
+    }
+    else
+    {
+      throw new \LogicException("The package scssphp/scssphp must be required in composer.");
     }
 
     return (isset($output)) ? $output : null;
